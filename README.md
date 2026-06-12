@@ -52,14 +52,6 @@ Aplikasi akan berjalan di:
 http://localhost:5173
 ```
 
-## Environment Variables
-
-Buat file `.env` pada root frontend:
-
-```env
-VITE_API_URL=http://127.0.0.1:8000/api
-```
-
 ## Dependencies
 
 Install package yang digunakan:
