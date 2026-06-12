@@ -31,7 +31,7 @@ git clone <repository-url>
 Masuk ke folder fe-test-widya:
 
 ```bash
-cd fe-test-widya
+cd fe-test-widyarobotik
 ```
 
 Install dependencies:
