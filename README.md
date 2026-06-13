@@ -25,7 +25,7 @@ npm v11.13.0
 Clone repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Rahmanhakim7/fe-test-widyarobotik.git
 ```
 
 Masuk ke folder fe-test-widya:

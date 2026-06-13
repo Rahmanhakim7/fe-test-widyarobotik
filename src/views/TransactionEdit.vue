@@ -10,7 +10,6 @@
         cancel-to="/transactions"
         @submit="updateData"
       />
-
       <div v-else class="text-center text-gray-500">Loading data...</div>
     </div>
   </div>
@@ -19,13 +18,16 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import api from "../api/axios";
 import FormTransaction from "../components/FormTransaction.vue";
 import Swal from "sweetalert2";
+import {
+  getTransactionDetail,
+  updateTransaction,
+} from "../services/transactionService";
 
 const route = useRoute();
 const router = useRouter();
-const id = route.params.id;
+const id = String(route.params.id);
 const ready = ref(false);
 
 const form = reactive({
@@ -37,7 +39,7 @@ const form = reactive({
 
 const getDetail = async () => {
   try {
-    const res = await api.get(`/transaksi/${id}/`);
+    const res = await getTransactionDetail(id);
     const data = res.data.data;
 
     Object.assign(form, {
@@ -61,8 +63,7 @@ const getDetail = async () => {
 
 const updateData = async (data: any) => {
   try {
-    await api.put(`/transaksi/${id}/`, data);
-
+    await updateTransaction(id, data);
     await Swal.fire({
       icon: "success",
       title: "Berhasil",

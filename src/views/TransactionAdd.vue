@@ -17,9 +17,9 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
-import api from "../api/axios";
 import FormTransaction from "../components/FormTransaction.vue";
 import Swal from "sweetalert2";
+import { createTransaction } from "../services/transactionService";
 
 const router = useRouter();
 const now = new Date();
@@ -44,7 +44,7 @@ const form = reactive({
 
 const simpan = async (data: any) => {
   try {
-    await api.post("/transaksi/", data);
+    await createTransaction(data);
 
     await Swal.fire({
       icon: "success",

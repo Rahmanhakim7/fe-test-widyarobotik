@@ -101,7 +101,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import api from "../api/axios";
+import {
+  getTransactions,
+  deleteTransaction,
+} from "../services/transactionService";
 import Button from "../components/Button.vue";
 import Input from "../components/Input.vue";
 import { PAYMENT_LABELS, PRODUCT_LABELS } from "../constants";
@@ -127,7 +130,7 @@ const fetchData = async () => {
     path: "/transactions",
     query: Object.keys(params).length ? params : undefined,
   });
-  const response = await api.get("/transaksi/", { params });
+  const response = await getTransactions(params);
   transactions.value = response.data.data;
 };
 
@@ -157,7 +160,7 @@ const hapus = async (id: number) => {
   if (!result.isConfirmed) return;
 
   try {
-    await api.delete(`/transaksi/${id}/`);
+    await deleteTransaction(id);
 
     transactions.value = transactions.value.filter((item) => item.id !== id);
 
