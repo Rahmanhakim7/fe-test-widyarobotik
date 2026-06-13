@@ -105,7 +105,8 @@ import api from "../api/axios";
 import Button from "../components/Button.vue";
 import Input from "../components/Input.vue";
 import { PAYMENT_LABELS, PRODUCT_LABELS } from "../constants";
-import type {Transaction} from "../types/transaction.ts";
+import type { Transaction } from "../types/transaction.ts";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const transactions = ref<Transaction[]>([]);
@@ -142,14 +143,39 @@ const resetFilter = async () => {
 };
 
 const hapus = async (id: number) => {
-  const yakin = confirm("Apakah anda yakin ingin menghapus data ini?");
-  if (!yakin) return;
+  const result = await Swal.fire({
+    title: "Hapus Data?",
+    text: "Data yang sudah dihapus tidak dapat dikembalikan.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#6b7280",
+  });
 
-  await api.delete(`/transaksi/${id}/`);
+  if (!result.isConfirmed) return;
 
-  transactions.value = transactions.value.filter((item) => item.id !== id);
+  try {
+    await api.delete(`/transaksi/${id}/`);
+
+    transactions.value = transactions.value.filter((item) => item.id !== id);
+
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Data berhasil dihapus.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    Swal.fire({
+      title: "Gagal!",
+      text: "Terjadi kesalahan saat menghapus data.",
+      icon: "error",
+    });
+  }
 };
-
 const logout = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");

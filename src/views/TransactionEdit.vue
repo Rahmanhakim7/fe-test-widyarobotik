@@ -20,8 +20,8 @@
 import { reactive, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "../api/axios";
-
 import FormTransaction from "../components/FormTransaction.vue";
+import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();
@@ -50,7 +50,12 @@ const getDetail = async () => {
     ready.value = true;
   } catch (error) {
     console.log(error);
-    alert("Gagal mengambil data");
+
+    Swal.fire({
+      icon: "error",
+      title: "Gagal",
+      text: "Gagal mengambil data transaksi.",
+    });
   }
 };
 
@@ -58,10 +63,21 @@ const updateData = async (data: any) => {
   try {
     await api.put(`/transaksi/${id}/`, data);
 
-    alert("Berhasil update");
+    await Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Data transaksi berhasil diperbarui.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
     router.push("/transactions");
   } catch (error) {
-    alert("Gagal update");
+    Swal.fire({
+      icon: "error",
+      title: "Gagal",
+      text: "Data transaksi gagal diperbarui.",
+    });
   }
 };
 

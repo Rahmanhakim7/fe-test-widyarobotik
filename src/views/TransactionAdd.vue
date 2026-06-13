@@ -18,8 +18,8 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import api from "../api/axios";
-
-import FormTransaction  from "../components/FormTransaction.vue";
+import FormTransaction from "../components/FormTransaction.vue";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const now = new Date();
@@ -46,11 +46,23 @@ const simpan = async (data: any) => {
   try {
     await api.post("/transaksi/", data);
 
-    alert("Transaksi berhasil dibuat");
+    await Swal.fire({
+      icon: "success",
+      title: "Berhasil!",
+      text: "Transaksi berhasil dibuat.",
+      confirmButtonColor: "#16a34a",
+    });
+
     router.push("/transactions");
   } catch (error: any) {
     console.log(error?.response || error);
-    alert("Gagal menyimpan transaksi");
+
+    Swal.fire({
+      icon: "error",
+      title: "Gagal!",
+      text: "Transaksi gagal disimpan.",
+      confirmButtonColor: "#dc2626",
+    });
   }
 };
 </script>
